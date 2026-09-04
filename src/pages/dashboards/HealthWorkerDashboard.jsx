@@ -1,5 +1,6 @@
 import React from 'react';
 import { useAuth } from '../../context/AuthContext';
+import { useLanguage } from '../../context/LanguageContext';
 import { useOffline } from '../../context/OfflineContext';
 import { usePatients } from '../../context/PatientContext';
 import { StatusBadge } from '../../components/common/StatusBadge';
@@ -21,6 +22,7 @@ import { Link } from 'react-router-dom';
 
 export const HealthWorkerDashboard = () => {
   const { user } = useAuth();
+  const { t } = useLanguage();
   const { isOnline, pendingSyncCount, triggerSync, isSyncing } = useOffline();
   const { patients } = usePatients();
 
@@ -39,24 +41,24 @@ export const HealthWorkerDashboard = () => {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
           <div>
             <div style={{ fontSize: '0.8125rem', color: '#F59E0B', fontWeight: '700', textTransform: 'uppercase' }}>
-              Field Health Worker Portal • ASHA / ANM Coordinator
+              {t('field_health_worker_portal')} • {t('asha_anm_coord')}
             </div>
             <h1 style={{ fontSize: '1.5rem', fontWeight: '800', marginTop: '0.25rem' }}>
               सुप्रभात, {user?.name || 'सुनिता शिंदे'}
             </h1>
             <p style={{ fontSize: '0.875rem', color: '#CBD5E1', marginTop: '0.25rem' }}>
-              Facility: <strong>{user?.facility_name || 'PHC Mulshi'}</strong> • District: {user?.district || 'Pune'}
+              {t('facility')}: <strong>{user?.facility_name || 'PHC Mulshi'}</strong> • {t('district')}: {user?.district || 'Pune'}
             </p>
           </div>
 
           <div style={{ display: 'flex', gap: '0.75rem' }}>
             <Link to="/health-worker/register" className="gov-btn gov-btn-saffron">
               <PlusCircle size={18} />
-              <span>Register Patient</span>
+              <span>{t('registerPatientAction')}</span>
             </Link>
             <Link to="/health-worker/triage" className="gov-btn gov-btn-secondary">
               <Activity size={18} />
-              <span>Digital Triage</span>
+              <span>{t('digitalTriageAction')}</span>
             </Link>
           </div>
         </div>
@@ -67,7 +69,7 @@ export const HealthWorkerDashboard = () => {
         <div className="stat-card">
           <div>
             <div className="stat-value">{patients.length}</div>
-            <div className="stat-label">Patients Registered</div>
+            <div className="stat-label">{t('registeredPatients')}</div>
           </div>
           <Users style={{ color: '#1E40AF' }} />
         </div>
@@ -75,7 +77,7 @@ export const HealthWorkerDashboard = () => {
         <div className="stat-card">
           <div>
             <div className="stat-value">3</div>
-            <div className="stat-label">Pending Digital Triage</div>
+            <div className="stat-label">{t('pendingDigitalTriage')}</div>
           </div>
           <Activity style={{ color: '#D97706' }} />
         </div>
@@ -83,7 +85,7 @@ export const HealthWorkerDashboard = () => {
         <div className="stat-card">
           <div>
             <div className="stat-value">2</div>
-            <div className="stat-label">Active Referrals Sent</div>
+            <div className="stat-label">{t('activeReferralsSent')}</div>
           </div>
           <GitPullRequest style={{ color: '#059669' }} />
         </div>
@@ -91,7 +93,7 @@ export const HealthWorkerDashboard = () => {
         <div className="stat-card">
           <div>
             <div className="stat-value">5</div>
-            <div className="stat-label">Follow-ups Due This Week</div>
+            <div className="stat-label">{t('followupsDueWeek')}</div>
           </div>
           <Clock style={{ color: '#6B21A8' }} />
         </div>
@@ -103,7 +105,7 @@ export const HealthWorkerDashboard = () => {
           <div className="gov-card-header">
             <div className="gov-card-title">
               <Wifi size={20} />
-              <span>Offline & Sync Status</span>
+              <span>{t('offlineSyncStatus')}</span>
             </div>
             <StatusBadge status={isOnline ? 'ONLINE' : 'OFFLINE'} />
           </div>
@@ -113,10 +115,10 @@ export const HealthWorkerDashboard = () => {
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div>
                   <div style={{ fontWeight: '700', color: '#0F172A' }}>
-                    {pendingSyncCount > 0 ? `${pendingSyncCount} Local Records Pending Sync` : 'All Local Data Synced'}
+                    {pendingSyncCount > 0 ? `${pendingSyncCount} ${t('pending_sync')}` : t('allLocalDataSynced')}
                   </div>
                   <div style={{ fontSize: '0.75rem', color: '#64748B', marginTop: '0.25rem' }}>
-                    {isOnline ? 'Connected to Govt Cloud Server' : 'Working Offline - Data Saved to Local Device Storage'}
+                    {isOnline ? t('connectedGovtCloud') : t('workingOfflineStorage')}
                   </div>
                 </div>
 
@@ -125,13 +127,13 @@ export const HealthWorkerDashboard = () => {
                   disabled={pendingSyncCount === 0 || isSyncing}
                   className="gov-btn gov-btn-primary gov-btn-sm"
                 >
-                  {isSyncing ? 'Syncing...' : 'Sync Now'}
+                  {isSyncing ? t('syncing') : t('sync_now')}
                 </button>
               </div>
             </div>
 
             <div style={{ fontSize: '0.8125rem', color: '#475569' }}>
-              <strong>Recent Action Log:</strong> Registered PAT-10247 (Ganpat More) with ST Elevation Triage priority.
+              <strong>{t('recentActionLog')}:</strong> {t('registeredRecord')} PAT-10247 (Ganpat More) • ST Elevation
             </div>
           </div>
         </div>
@@ -141,10 +143,10 @@ export const HealthWorkerDashboard = () => {
           <div className="gov-card-header">
             <div className="gov-card-title">
               <Activity size={20} />
-              <span>Registered Patient Queue</span>
+              <span>{t('registeredPatientQueue')}</span>
             </div>
             <Link to="/health-worker/patients" style={{ fontSize: '0.8125rem', color: '#1E40AF', fontWeight: '600' }}>
-              View All
+              {t('viewAll')}
             </Link>
           </div>
 
@@ -164,13 +166,13 @@ export const HealthWorkerDashboard = () => {
               >
                 <div>
                   <div style={{ fontWeight: '700', fontSize: '0.875rem', color: '#0F2C59' }}>
-                    {pt.name} ({pt.age} yrs)
+                    {pt.name} ({pt.age} {t('yearsShort')})
                   </div>
                   <div style={{ fontSize: '0.75rem', color: '#64748B' }}>
-                    ID: {pt.patient_id} • Village: {pt.village} {pt.vitals?.bp ? `• BP: ${pt.vitals.bp}` : ''}
+                    {t('identifier')}: {pt.patient_id} • {t('village')}: {pt.village} {pt.vitals?.bp ? `• ${t('bloodPressureShort')}: ${pt.vitals.bp}` : ''}
                   </div>
                   <div style={{ fontSize: '0.75rem', color: '#DC2626', fontWeight: '500', marginTop: '0.125rem' }}>
-                    Reason: {pt.triage_reason || 'Registered Record'}
+                    {t('reason')}: {pt.triage_reason || t('registeredRecord')}
                   </div>
                 </div>
 
@@ -185,10 +187,10 @@ export const HealthWorkerDashboard = () => {
           <div className="gov-card-header">
             <div className="gov-card-title">
               <GitPullRequest size={20} />
-              <span>Multi-Hospital Referrals Sent</span>
+              <span>{t('referralSent')}</span>
             </div>
             <Link to="/health-worker/referrals" style={{ fontSize: '0.8125rem', color: '#1E40AF', fontWeight: '600' }}>
-              New Referral
+              {t('newReferral')}
             </Link>
           </div>
 
@@ -202,10 +204,10 @@ export const HealthWorkerDashboard = () => {
                   <StatusBadge status={ref.status} />
                 </div>
                 <div style={{ fontSize: '0.8125rem', color: '#475569' }}>
-                  Accepted by: <strong>{ref.accepted_hospital}</strong>
+                  {t('acceptedBy')}: <strong>{ref.accepted_hospital}</strong>
                 </div>
                 <div style={{ fontSize: '0.75rem', color: '#059669', marginTop: '0.25rem' }}>
-                  ✓ Secondary hospital requests automatically cancelled upon acceptance.
+                  ✓ {t('secondaryHospitalCancelled')}
                 </div>
               </div>
             ))}
@@ -217,22 +219,22 @@ export const HealthWorkerDashboard = () => {
           <div className="gov-card-header">
             <div className="gov-card-title">
               <Building2 size={20} />
-              <span>PHC Mulshi Facility Status</span>
+              <span>{user?.facility_name || 'PHC Mulshi'} {t('facilityStatus')}</span>
             </div>
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', fontSize: '0.875rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.375rem 0' }}>
-              <span>OPD Doctors On Duty:</span>
+              <span>{t('doctorsOnDuty')}:</span>
               <strong>2 Available</strong>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.375rem 0', borderTop: '1px solid #E2E8F0' }}>
-              <span>IFA Supplement Stock:</span>
-              <StatusBadge status="CRITICAL" customLabel="CRITICAL STOCK" />
+              <span>IFA Supplement {t('medicineStocks')}:</span>
+              <StatusBadge status="CRITICAL" customLabel={t('criticalStock')} />
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.375rem 0', borderTop: '1px solid #E2E8F0' }}>
-              <span>Emergency Ambulance Service:</span>
-              <StatusBadge status="AVAILABLE" customLabel="READY 24/7" />
+              <span>{t('emergencyAmbulance')}:</span>
+              <StatusBadge status="AVAILABLE" customLabel={t('ready247')} />
             </div>
           </div>
         </div>

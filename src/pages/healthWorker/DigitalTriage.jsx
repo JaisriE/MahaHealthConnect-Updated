@@ -8,6 +8,7 @@ import { useAudit } from '../../context/AuditContext';
 import { StatusBadge } from '../../components/common/StatusBadge';
 import { evaluateAccess, DATA_TYPES } from '../../utils/authorization';
 import { evaluateTriageRules, IMMEDIATE_DANGER_KEYS } from '../../utils/triageRules';
+import { api } from '../../services/api';
 import {
   Activity,
   Search,
@@ -65,7 +66,7 @@ export const DigitalTriage = () => {
   const { user } = useAuth();
   const { patients } = usePatients();
   const { t } = useLanguage();
-  const { isOnline, pendingSyncCount, triggerSync, isSyncing } = useOffline();
+  const { isOnline, pendingSyncCount, triggerSync, isSyncing, addPendingRecord } = useOffline();
   const { logAccessEvent } = useAudit();
 
   // Patient Selection
@@ -200,7 +201,7 @@ export const DigitalTriage = () => {
   };
 
   // Submit & Save Triage
-  const handleConfirmAndSaveTriage = () => {
+  const handleConfirmAndSaveTriage = async () => {
     if (!selectedPatient) return;
 
     const now = new Date();
@@ -229,6 +230,23 @@ export const DigitalTriage = () => {
       status: 'COMPLETED',
       syncStatus: isOnline ? 'SYNCED' : 'PENDING SYNC'
     };
+
+    if (isOnline && localStorage.getItem('mhc_access_token')) {
+      try {
+        await api.saveTriage({
+          patient_id: selectedPatient.patient_id,
+          priority: evaluationResult.priority,
+          indicators: evaluationResult.triggeredIndicators,
+          vitals: formData.vitals,
+          reason: evaluationResult.reasonSummary
+        });
+      } catch {
+        newRecord.syncStatus = 'PENDING SYNC';
+        addPendingRecord(`Triage Record (${selectedPatient.patient_id})`);
+      }
+    } else if (!isOnline) {
+      addPendingRecord(`Triage Record (${selectedPatient.patient_id})`);
+    }
 
     setTriageHistory(prev => [newRecord, ...prev]);
     setSavedResultCard(newRecord);

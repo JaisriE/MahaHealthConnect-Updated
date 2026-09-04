@@ -12,8 +12,6 @@ import {
   ArrowRight,
   Lock,
   Phone,
-  Info,
-  CheckCircle2
 } from 'lucide-react';
 
 export const LoginPage = () => {
@@ -24,15 +22,27 @@ export const LoginPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [selectedRole, setSelectedRole] = useState('health_worker');
+  const [loginError, setLoginError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleManualLogin = (e) => {
+  const handleManualLogin = async (e) => {
     e.preventDefault();
-    loginAsUser(username, password, selectedRole);
+    setLoginError('');
+    setIsSubmitting(true);
+    const result = await loginAsUser(username, password, selectedRole);
+    setIsSubmitting(false);
+    if (!result.success) {
+      setLoginError(result.error || t('invalidLogin'));
+      return;
+    }
     navigateToRoleDashboard(selectedRole);
   };
 
-  const handleDemoLaunch = (roleKey) => {
-    switchRole(roleKey);
+  const handleDemoLaunch = async (roleKey) => {
+    const demoPasswords = { patient: 'patient123', health_worker: 'worker123', doctor: 'doctor123', facility_admin: 'admin123', district_authority: 'district123' };
+    const demoUsers = { patient: 'USR-PAT-001', health_worker: 'USR-HW-002', doctor: 'USR-DOC-003', facility_admin: 'USR-ADM-004', district_authority: 'USR-DHO-005' };
+    const result = await loginAsUser(demoUsers[roleKey], demoPasswords[roleKey], roleKey);
+    if (!result.success) switchRole(roleKey);
     navigateToRoleDashboard(roleKey);
   };
 
@@ -208,15 +218,20 @@ export const LoginPage = () => {
           }}
         >
           <h2 style={{ fontSize: '1.25rem', fontWeight: '700', color: '#0F2C59', marginBottom: '0.25rem' }}>
-            Government Employee / Citizen Login
+            {t('signInPortal')}
           </h2>
           <p style={{ fontSize: '0.8125rem', color: '#64748B', marginBottom: '1.25rem' }}>
-            Enter ABHA ID, Mobile Number, or Government Employee ID
+            {t('userIdentifier')}
           </p>
 
           <form onSubmit={handleManualLogin}>
+            {loginError && (
+              <div role="alert" style={{ marginBottom: '1rem', padding: '0.75rem', color: '#991B1B', backgroundColor: '#FEF2F2', border: '1px solid #FCA5A5', borderRadius: '6px', fontSize: '0.8125rem' }}>
+                {loginError}
+              </div>
+            )}
             <div className="gov-form-group">
-              <label className="gov-label">Select Stakeholder Role</label>
+              <label className="gov-label">{t('selectStakeholderRole')}</label>
               <select
                 className="gov-select"
                 value={selectedRole}
@@ -231,7 +246,7 @@ export const LoginPage = () => {
             </div>
 
             <div className="gov-form-group">
-              <label className="gov-label">User Identifier (Phone / ABHA / Emp ID)</label>
+              <label className="gov-label">{t('userIdentifier')}</label>
               <div style={{ position: 'relative' }}>
                 <input
                   type="text"
@@ -246,7 +261,7 @@ export const LoginPage = () => {
             </div>
 
             <div className="gov-form-group">
-              <label className="gov-label">Password / OTP Passcode</label>
+              <label className="gov-label">{t('passwordOtp')}</label>
               <div style={{ position: 'relative' }}>
                 <input
                   type="password"
@@ -260,8 +275,8 @@ export const LoginPage = () => {
               </div>
             </div>
 
-            <button type="submit" className="gov-btn gov-btn-saffron" style={{ width: '100%', marginTop: '1rem' }}>
-              Sign In to Portal
+            <button type="submit" disabled={isSubmitting} className="gov-btn gov-btn-saffron" style={{ width: '100%', marginTop: '1rem' }}>
+              {isSubmitting ? t('signingIn') : t('signInPortal')}
             </button>
 
             <div
@@ -277,9 +292,9 @@ export const LoginPage = () => {
               }}
             >
               <div style={{ fontWeight: '700', color: '#0F2C59', marginBottom: '0.25rem' }}>
-                🔒 Secure Portal Notice
+                {t('securePortalNotice')}
               </div>
-              Role-based access controls (RBAC) active. All sensitive access attempts are logged in the District Security Audit Trail.
+              {t('rbacNotice')}
             </div>
           </form>
         </div>

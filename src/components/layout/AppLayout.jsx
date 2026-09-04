@@ -1,19 +1,37 @@
 import React, { useState } from 'react';
-import { Outlet, useLocation, Link } from 'react-router-dom';
+import { Outlet, useLocation, Link, Navigate } from 'react-router-dom';
 import { Header } from './Header';
 import { Sidebar } from './Sidebar';
 import { ChevronRight, Home } from 'lucide-react';
+import { useAuth } from '../../context/AuthContext';
+import { useLanguage } from '../../context/LanguageContext';
 
 export const AppLayout = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
+  const { role, isAuthenticated } = useAuth();
+  const { t } = useLanguage();
+
+  if (!isAuthenticated) return <Navigate to="/login" replace />;
+  const routeRole = location.pathname.split('/')[1];
+  const allowedRoles = {
+    patient: 'patient',
+    'health-worker': 'health_worker',
+    doctor: 'doctor',
+    'facility-admin': 'facility_admin',
+    'district-authority': 'district_authority'
+  };
+  if (allowedRoles[routeRole] && allowedRoles[routeRole] !== role && location.pathname !== '/triage') {
+    return <Navigate to="/" replace />;
+  }
 
   const getBreadcrumbs = () => {
     const pathnames = location.pathname.split('/').filter((x) => x);
     return pathnames.map((value, index) => {
       const to = `/${pathnames.slice(0, index + 1).join('/')}`;
       const isLast = index === pathnames.length - 1;
-      const formatted = value.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase());
+      const breadcrumbKeys = { 'health-worker': 'healthWorkerRole', patient: 'citizenPatient', doctor: 'doctorSpecialist', 'facility-admin': 'facilityAdmin', 'district-authority': 'districtHealthOfficer', maternal: 'maternalHealthcare', documents: 'documentUpload', appointments: 'appointments', referrals: 'referrals', prescriptions: 'prescriptions', followups: 'followups', diagnostics: 'diagnostics', queue: 'queue' };
+      const formatted = breadcrumbKeys[value] ? t(breadcrumbKeys[value]) : value.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase());
 
       return {
         to,

@@ -1,11 +1,13 @@
 import React from 'react';
 import { useAuth } from '../../context/AuthContext';
+import { useLanguage } from '../../context/LanguageContext';
 import { StatusBadge } from '../../components/common/StatusBadge';
 import { MOCK_APPOINTMENTS, MOCK_REFERRALS, MOCK_PRESCRIPTIONS, MOCK_FACILITIES } from '../../mockData';
 import { Calendar, GitPullRequest, FileText, MapPin, Radio, Clock, Shield } from 'lucide-react';
 
 export const PatientDashboard = () => {
   const { user } = useAuth();
+  const { t } = useLanguage();
   const appointment = MOCK_APPOINTMENTS[0];
   const referral = MOCK_REFERRALS[0];
   const prescription = MOCK_PRESCRIPTIONS[0];
@@ -48,7 +50,7 @@ export const PatientDashboard = () => {
           >
             <Radio size={24} style={{ color: '#F59E0B' }} />
             <div>
-              <div style={{ fontSize: '0.75rem', color: '#CBD5E1' }}>NFC Patient Card</div>
+              <div style={{ fontSize: '0.75rem', color: '#CBD5E1' }}>{t('nfcCardIdentification')}</div>
               <div style={{ fontSize: '0.875rem', fontWeight: '700', fontFamily: 'monospace' }}>
                 {user?.nfc_token || 'NFC-PAT-10245-MH'}
               </div>
@@ -62,7 +64,7 @@ export const PatientDashboard = () => {
         <div className="stat-card">
           <div>
             <div className="stat-value">1</div>
-            <div className="stat-label">Upcoming Appointment</div>
+            <div className="stat-label">{t('appointments')}</div>
           </div>
           <Calendar style={{ color: '#1E40AF' }} />
         </div>
@@ -70,7 +72,7 @@ export const PatientDashboard = () => {
         <div className="stat-card">
           <div>
             <div className="stat-value">1</div>
-            <div className="stat-label">Active Hospital Referral</div>
+            <div className="stat-label">{t('referralStatus')}</div>
           </div>
           <GitPullRequest style={{ color: '#D97706' }} />
         </div>
@@ -78,7 +80,7 @@ export const PatientDashboard = () => {
         <div className="stat-card">
           <div>
             <div className="stat-value">1</div>
-            <div className="stat-label">Active Prescription</div>
+            <div className="stat-label">{t('prescriptions')}</div>
           </div>
           <FileText style={{ color: '#059669' }} />
         </div>
@@ -86,7 +88,7 @@ export const PatientDashboard = () => {
         <div className="stat-card">
           <div>
             <div className="stat-value">3 days</div>
-            <div className="stat-label">Next Follow-up Due</div>
+            <div className="stat-label">{t('followups')}</div>
           </div>
           <Clock style={{ color: '#6B21A8' }} />
         </div>
@@ -98,7 +100,7 @@ export const PatientDashboard = () => {
           <div className="gov-card-header">
             <div className="gov-card-title">
               <GitPullRequest size={20} />
-              <span>Active Referral Status</span>
+              <span>{t('activeReferralStatus')}</span>
             </div>
             <StatusBadge status={referral.status} />
           </div>
@@ -114,9 +116,9 @@ export const PatientDashboard = () => {
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', color: '#475569' }}>
-              <div><strong>Referring Facility:</strong> {referral.referring_facility_name}</div>
-              <div><strong>Health Worker Notes:</strong> {referral.clinical_notes}</div>
-              <div><strong>Referral Priority:</strong> <StatusBadge status={referral.priority} /></div>
+              <div><strong>{t('referringFacility')}:</strong> {referral.referring_facility_name}</div>
+              <div><strong>{t('healthWorkerNotes')}:</strong> {referral.clinical_notes}</div>
+              <div><strong>{t('referralPriority')}:</strong> <StatusBadge status={referral.priority} /></div>
             </div>
           </div>
         </div>
@@ -126,7 +128,7 @@ export const PatientDashboard = () => {
           <div className="gov-card-header">
             <div className="gov-card-title">
               <Calendar size={20} />
-              <span>Upcoming OPD Appointment</span>
+              <span>{t('upcomingAppointment')}</span>
             </div>
             <StatusBadge status={appointment.status} />
           </div>
@@ -143,9 +145,9 @@ export const PatientDashboard = () => {
             </div>
 
             <div style={{ display: 'flex', gap: '1rem', color: '#334155', fontSize: '0.8125rem', backgroundColor: '#F8FAFC', padding: '0.625rem', borderRadius: '6px' }}>
-              <div><strong>Date:</strong> {appointment.date}</div>
-              <div><strong>Time:</strong> {appointment.time}</div>
-              <div><strong>Type:</strong> {appointment.type}</div>
+              <div><strong>{t('date')}:</strong> {appointment.date}</div>
+              <div><strong>{t('time')}:</strong> {appointment.time}</div>
+              <div><strong>{t('typeLabel')}:</strong> {appointment.type}</div>
             </div>
           </div>
         </div>
@@ -155,7 +157,7 @@ export const PatientDashboard = () => {
           <div className="gov-card-header">
             <div className="gov-card-title">
               <FileText size={20} />
-              <span>Current Prescriptions</span>
+              <span>{t('currentPrescriptions')}</span>
             </div>
             <span style={{ fontSize: '0.75rem', color: '#64748B' }}>Dr. Aniket Deshmukh</span>
           </div>
@@ -178,7 +180,7 @@ export const PatientDashboard = () => {
           <div className="gov-card-header">
             <div className="gov-card-title">
               <MapPin size={20} />
-              <span>Nearby Government Healthcare Facilities</span>
+              <span>{t('nearbyFacilities')}</span>
             </div>
           </div>
 

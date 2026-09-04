@@ -1,5 +1,6 @@
 import React from 'react';
 import { useAuth } from '../../context/AuthContext';
+import { useLanguage } from '../../context/LanguageContext';
 import { StatusBadge } from '../../components/common/StatusBadge';
 import { MOCK_MEDICINES, MOCK_DIAGNOSTICS, MOCK_REFERRALS } from '../../mockData';
 import { Building2, Pill, Activity, UserCheck, GitPullRequest, AlertTriangle, ShieldCheck } from 'lucide-react';
@@ -7,6 +8,7 @@ import { Link } from 'react-router-dom';
 
 export const FacilityAdminDashboard = () => {
   const { user } = useAuth();
+  const { t } = useLanguage();
 
   return (
     <div>
@@ -36,11 +38,11 @@ export const FacilityAdminDashboard = () => {
           <div style={{ display: 'flex', gap: '0.5rem' }}>
             <Link to="/facility-admin/referrals" className="gov-btn gov-btn-saffron">
               <GitPullRequest size={18} />
-              <span>Referrals Inbox (2)</span>
+              <span>{t('referralInbox')} (2)</span>
             </Link>
             <Link to="/facility-admin/medicines" className="gov-btn gov-btn-secondary">
               <Pill size={18} />
-              <span>Medicine Stock</span>
+              <span>{t('medicineStock')}</span>
             </Link>
           </div>
         </div>
@@ -51,7 +53,7 @@ export const FacilityAdminDashboard = () => {
         <div className="stat-card">
           <div>
             <div className="stat-value">45 / 48</div>
-            <div className="stat-label">Doctors Present Today</div>
+            <div className="stat-label">{t('doctorAvailability')}</div>
           </div>
           <UserCheck style={{ color: '#059669' }} />
         </div>
@@ -59,7 +61,7 @@ export const FacilityAdminDashboard = () => {
         <div className="stat-card">
           <div>
             <div className="stat-value">2</div>
-            <div className="stat-label">Critical Medicine Stock Alerts</div>
+            <div className="stat-label">{t('medicineAlerts')}</div>
           </div>
           <AlertTriangle style={{ color: '#DC2626' }} />
         </div>
@@ -67,7 +69,7 @@ export const FacilityAdminDashboard = () => {
         <div className="stat-card">
           <div>
             <div className="stat-value">80%</div>
-            <div className="stat-label">Bed Occupancy Rate</div>
+            <div className="stat-label">{t('beds')}</div>
           </div>
           <Building2 style={{ color: '#1E40AF' }} />
         </div>
@@ -75,7 +77,7 @@ export const FacilityAdminDashboard = () => {
         <div className="stat-card">
           <div>
             <div className="stat-value">65 / 115</div>
-            <div className="stat-label">Diagnostic Capacity Used</div>
+            <div className="stat-label">{t('diagnosticCapacity')}</div>
           </div>
           <Activity style={{ color: '#D97706' }} />
         </div>
@@ -87,7 +89,7 @@ export const FacilityAdminDashboard = () => {
           <div className="gov-card-header">
             <div className="gov-card-title">
               <GitPullRequest size={20} />
-              <span>Incoming PHC Referrals Inbox</span>
+              <span>{t('referralInbox')}</span>
             </div>
           </div>
 
@@ -106,7 +108,7 @@ export const FacilityAdminDashboard = () => {
 
                 <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem' }}>
                   <button className="gov-btn gov-btn-primary gov-btn-sm" disabled>
-                    ✓ ACCEPTED (Capacity Flagged)
+                    ✓ {t('accepted')} ({t('facilityCapacity')})
                   </button>
                   <button className="gov-btn gov-btn-secondary gov-btn-sm">
                     Re-route / Reject
@@ -122,7 +124,7 @@ export const FacilityAdminDashboard = () => {
           <div className="gov-card-header">
             <div className="gov-card-title">
               <Pill size={20} />
-              <span>Medicine Stock Threshold Alerts</span>
+              <span>{t('medicineAlertsTitle')}</span>
             </div>
             <Link to="/facility-admin/medicines" style={{ fontSize: '0.8125rem', color: '#1E40AF', fontWeight: '600' }}>
               Full Stock
@@ -149,7 +151,7 @@ export const FacilityAdminDashboard = () => {
           <div className="gov-card-header">
             <div className="gov-card-title">
               <Activity size={20} />
-              <span>Diagnostic Lab Capacities Today</span>
+              <span>{t('diagnosticLabCapacities')}</span>
             </div>
           </div>
 
@@ -161,7 +163,7 @@ export const FacilityAdminDashboard = () => {
                   <StatusBadge status={diag.status} />
                 </div>
                 <div style={{ fontSize: '0.75rem', color: '#475569' }}>
-                  Capacity: {diag.completed_today} / {diag.daily_capacity} completed ({diag.remaining_capacity} remaining today)
+                  {t('capacityLabel')}: {diag.completed_today} / {diag.daily_capacity} {t('completedLabel')} ({diag.remaining_capacity} {t('remainingToday')})
                 </div>
               </div>
             ))}

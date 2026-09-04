@@ -222,10 +222,10 @@ export const PatientRegistration = () => {
     processRegistration(finalVillage);
   };
 
-  const processRegistration = (villageName) => {
+  const processRegistration = async (villageName) => {
     setIsSubmitting(true);
 
-    setTimeout(() => {
+    setTimeout(async () => {
       const now = new Date();
       const formattedDate = now.toLocaleDateString('en-IN', {
         day: '2-digit',
@@ -264,10 +264,15 @@ export const PatientRegistration = () => {
         registered_at: formattedDate
       };
 
-      addPatient(newPatientRecord);
-      setRegisteredPatient(newPatientRecord);
-      setIsSubmitting(false);
-      setDuplicateWarning(null);
+      try {
+        const savedPatient = await addPatient(newPatientRecord);
+        setRegisteredPatient(savedPatient);
+        setDuplicateWarning(null);
+      } catch (error) {
+        setErrors({ submit: error.message || t('duplicateMatchNote') });
+      } finally {
+        setIsSubmitting(false);
+      }
     }, 600);
   };
 

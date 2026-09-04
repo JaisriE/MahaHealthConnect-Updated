@@ -27,12 +27,12 @@ export const Header = ({ toggleMobileSidebar }) => {
 
   const getRoleLabel = () => {
     switch (role) {
-      case 'patient': return 'Citizen / Patient';
-      case 'health_worker': return 'Health Worker (ASHA/ANM)';
-      case 'doctor': return 'Doctor / Specialist';
-      case 'facility_admin': return 'Facility Admin';
-      case 'district_authority': return 'District Health Officer (DHO)';
-      default: return 'User';
+      case 'patient': return t('citizenPatient');
+      case 'health_worker': return t('healthWorkerRole');
+      case 'doctor': return t('doctorSpecialist');
+      case 'facility_admin': return t('facilityAdmin');
+      case 'district_authority': return t('districtHealthOfficer');
+      default: return t('user');
     }
   };
 
@@ -43,7 +43,7 @@ export const Header = ({ toggleMobileSidebar }) => {
           className="gov-btn gov-btn-secondary gov-btn-sm"
           style={{ display: 'none' }}
           onClick={toggleMobileSidebar}
-          aria-label="Toggle Navigation Menu"
+          aria-label={t('toggleNavigationMenu')}
         >
           <Menu size={20} />
         </button>
@@ -65,7 +65,7 @@ export const Header = ({ toggleMobileSidebar }) => {
               border: '2px solid #ffffff',
               boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
             }}
-            title="Government of Maharashtra Healthcare Portal"
+            title={t('governmentHealthcarePortal')}
           >
             महा
           </div>
@@ -107,7 +107,7 @@ export const Header = ({ toggleMobileSidebar }) => {
               display: 'flex',
               alignItems: 'center'
             }}
-            title="Click to toggle Online/Offline mode simulation for demo"
+            title={t('networkSimulationTooltip')}
           >
             <StatusBadge status={isOnline ? 'ONLINE' : 'OFFLINE'} />
           </button>
@@ -129,7 +129,7 @@ export const Header = ({ toggleMobileSidebar }) => {
                 gap: '0.25rem',
                 cursor: 'pointer'
               }}
-              title="Click to perform local sync simulation"
+              title={t('syncSimulationTooltip')}
             >
               <RefreshCw size={12} className={isSyncing ? 'spin' : ''} />
               <span>{pendingSyncCount} {t('pending_sync')}</span>
@@ -143,7 +143,7 @@ export const Header = ({ toggleMobileSidebar }) => {
           <select
             value={language}
             onChange={(e) => setLanguage(e.target.value)}
-            aria-label="Select Global Interface Language"
+            aria-label={t('selectLanguage')}
             style={{
               backgroundColor: 'transparent',
               color: '#ffffff',
@@ -180,7 +180,7 @@ export const Header = ({ toggleMobileSidebar }) => {
               cursor: 'pointer',
               position: 'relative'
             }}
-            title="Notifications"
+            title={t('notifications')}
           >
             <Bell size={18} />
             <span
@@ -213,14 +213,14 @@ export const Header = ({ toggleMobileSidebar }) => {
               }}
             >
               <div style={{ fontWeight: '700', fontSize: '0.875rem', marginBottom: '0.5rem', borderBottom: '1px solid #E2E8F0', paddingBottom: '0.375rem' }}>
-                System Notifications
+                {t('systemNotifications')}
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', fontSize: '0.8125rem' }}>
                 <div style={{ padding: '0.375rem', backgroundColor: '#EFF6FF', borderRadius: '4px' }}>
-                  <strong>Referral Accepted:</strong> District Hospital Aundh accepted REF-9901 for Ramesh Patil.
+                  <strong>{t('notificationReferralAccepted')}:</strong> District Hospital Aundh accepted REF-9901 for Ramesh Patil.
                 </div>
                 <div style={{ padding: '0.375rem', backgroundColor: '#FEF3C7', borderRadius: '4px' }}>
-                  <strong>Medicine Alert:</strong> IFA Red tablets below minimum safety stock at PHC Mulshi.
+                  <strong>{t('notificationMedicineAlert')}:</strong> IFA Red tablets below minimum safety stock at PHC Mulshi.
                 </div>
               </div>
             </div>

@@ -33,14 +33,14 @@ export const Sidebar = ({ mobileOpen, closeMobileSidebar }) => {
       case 'patient':
         return [
           { to: '/patient', label: t('dashboard'), icon: <LayoutDashboard size={18} /> },
-          { to: '/patient/profile', label: 'My Health Profile', icon: <UserCheck size={18} /> },
+          { to: '/patient/profile', label: t('myHealthProfile'), icon: <UserCheck size={18} /> },
           { to: '/patient/appointments', label: t('appointments'), icon: <Calendar size={18} /> },
-          { to: '/patient/referrals', label: 'Referral Status', icon: <GitPullRequest size={18} /> },
+          { to: '/patient/referrals', label: t('referralStatus'), icon: <GitPullRequest size={18} /> },
           { to: '/patient/prescriptions', label: t('prescriptions'), icon: <FileText size={18} /> },
           { to: '/patient/followups', label: t('followups'), icon: <Clock size={18} /> },
-          { to: '/patient/maternal', label: 'Maternal Healthcare', icon: <Baby size={18} /> },
-          { to: '/patient/services', label: 'Service Finder', icon: <Search size={18} /> },
-          { to: '/patient/nfc', label: 'NFC Card Identification', icon: <Radio size={18} /> }
+          { to: '/patient/maternal', label: t('maternalHealthcare'), icon: <Baby size={18} /> },
+          { to: '/patient/services', label: t('serviceFinder'), icon: <Search size={18} /> },
+          { to: '/patient/nfc', label: t('nfcCardIdentification'), icon: <Radio size={18} /> }
         ];
 
       case 'health_worker':
@@ -61,7 +61,7 @@ export const Sidebar = ({ mobileOpen, closeMobileSidebar }) => {
         return [
           { to: '/doctor', label: t('dashboard'), icon: <LayoutDashboard size={18} /> },
           { to: '/doctor/queue', label: t('queue'), icon: <ClipboardList size={18} /> },
-          { to: '/doctor/patients', label: 'Authorized Patients', icon: <ShieldCheck size={18} /> },
+          { to: '/doctor/patients', label: t('authorizedPatients'), icon: <ShieldCheck size={18} /> },
           { to: '/doctor/diagnostics', label: t('diagnostics'), icon: <Stethoscope size={18} /> },
           { to: '/doctor/prescription', label: t('prescriptions'), icon: <FileText size={18} /> },
           { to: '/doctor/referrals', label: t('referrals'), icon: <GitPullRequest size={18} /> },
@@ -72,22 +72,22 @@ export const Sidebar = ({ mobileOpen, closeMobileSidebar }) => {
         return [
           { to: '/facility-admin', label: t('dashboard'), icon: <LayoutDashboard size={18} /> },
           { to: '/facility-admin/attendance', label: t('attendance'), icon: <UserCheck size={18} /> },
-          { to: '/facility-admin/doctors', label: 'Doctor Availability', icon: <Stethoscope size={18} /> },
+          { to: '/facility-admin/doctors', label: t('doctorAvailability'), icon: <Stethoscope size={18} /> },
           { to: '/facility-admin/medicines', label: t('medicines'), icon: <Pill size={18} /> },
-          { to: '/facility-admin/diagnostics', label: 'Diagnostic Capacity', icon: <Activity size={18} /> },
-          { to: '/facility-admin/referrals', label: 'Hospital Referrals Inbox', icon: <GitPullRequest size={18} /> },
+          { to: '/facility-admin/diagnostics', label: t('diagnosticCapacity'), icon: <Activity size={18} /> },
+          { to: '/facility-admin/referrals', label: t('hospitalReferralsInbox'), icon: <GitPullRequest size={18} /> },
           { to: '/facility-admin/analytics', label: t('reports'), icon: <BarChart3 size={18} /> }
         ];
 
       case 'district_authority':
         return [
-          { to: '/district-authority', label: 'District Overview', icon: <LayoutDashboard size={18} /> },
-          { to: '/district-authority/facilities', label: 'Facility Network', icon: <Building size={18} /> },
-          { to: '/district-authority/referral-analytics', label: 'Referral Analytics', icon: <GitPullRequest size={18} /> },
-          { to: '/district-authority/medicine-analytics', label: 'Medicine Stocks', icon: <Pill size={18} /> },
-          { to: '/district-authority/diagnostic-analytics', label: 'Diagnostic Capacities', icon: <Activity size={18} /> },
-          { to: '/district-authority/specialists', label: 'Specialist Distribution', icon: <Stethoscope size={18} /> },
-          { to: '/district-authority/audit-logs', label: 'Security & Audit Logs', icon: <ShieldCheck size={18} /> }
+          { to: '/district-authority', label: t('districtOverview'), icon: <LayoutDashboard size={18} /> },
+          { to: '/district-authority/facilities', label: t('facilityNetwork'), icon: <Building size={18} /> },
+          { to: '/district-authority/referral-analytics', label: t('referralAnalytics'), icon: <GitPullRequest size={18} /> },
+          { to: '/district-authority/medicine-analytics', label: t('medicineStocks'), icon: <Pill size={18} /> },
+          { to: '/district-authority/diagnostic-analytics', label: t('diagnosticCapacities'), icon: <Activity size={18} /> },
+          { to: '/district-authority/specialists', label: t('specialistDistribution'), icon: <Stethoscope size={18} /> },
+          { to: '/district-authority/audit-logs', label: t('securityAuditLogs'), icon: <ShieldCheck size={18} /> }
         ];
 
       default:

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { MOCK_PATIENTS } from '../mockData';
+import { api } from '../services/api';
 
 const PatientContext = createContext();
 
@@ -42,11 +43,21 @@ export const PatientProvider = ({ children }) => {
     return `PAT-MH-${String(nextNum).padStart(6, '0')}`;
   };
 
-  const addPatient = (patientData) => {
+  const addPatient = async (patientData) => {
     const newPatient = {
       ...patientData,
       registered_at: patientData.registered_at || new Date().toISOString().replace('T', ' ').substring(0, 19),
     };
+
+    if (localStorage.getItem('mhc_access_token')) {
+      try {
+        const response = await api.createPatient(newPatient);
+        setPatients(prev => [response.patient, ...prev.filter((patient) => patient.patient_id !== response.patient.patient_id)]);
+        return response.patient;
+      } catch (error) {
+        if (error.status === 409) throw error;
+      }
+    }
 
     setPatients(prev => [newPatient, ...prev]);
     return newPatient;

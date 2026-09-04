@@ -1,5 +1,6 @@
 import React from 'react';
 import { useAuth } from '../../context/AuthContext';
+import { useLanguage } from '../../context/LanguageContext';
 import { StatusBadge } from '../../components/common/StatusBadge';
 import { MOCK_APPOINTMENTS, MOCK_PATIENTS, MOCK_REFERRALS } from '../../mockData';
 import { Stethoscope, ClipboardList, ShieldCheck, FileText, AlertOctagon, UserCheck, Calendar, ArrowRight } from 'lucide-react';
@@ -7,6 +8,7 @@ import { Link } from 'react-router-dom';
 
 export const DoctorDashboard = () => {
   const { user } = useAuth();
+  const { t } = useLanguage();
 
   return (
     <div>
@@ -44,7 +46,7 @@ export const DoctorDashboard = () => {
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: '700', color: '#86EFAC' }}>
               <ShieldCheck size={16} />
-              <span>RBAC Access Clearance Active</span>
+              <span>{t('rbacClearance')}</span>
             </div>
             <div style={{ color: '#CBD5E1', fontSize: '0.75rem', marginTop: '0.125rem' }}>
               Access Granted via Token APT-8801 & REF-9901
@@ -58,7 +60,7 @@ export const DoctorDashboard = () => {
         <div className="stat-card">
           <div>
             <div className="stat-value">14</div>
-            <div className="stat-label">Today's Appointments</div>
+            <div className="stat-label">{t('appointments')}</div>
           </div>
           <Calendar style={{ color: '#1E40AF' }} />
         </div>
@@ -66,7 +68,7 @@ export const DoctorDashboard = () => {
         <div className="stat-card">
           <div>
             <div className="stat-value">4</div>
-            <div className="stat-label">In OPD Queue Now</div>
+            <div className="stat-label">{t('queue')}</div>
           </div>
           <ClipboardList style={{ color: '#059669' }} />
         </div>
@@ -74,7 +76,7 @@ export const DoctorDashboard = () => {
         <div className="stat-card">
           <div>
             <div className="stat-value">2</div>
-            <div className="stat-label">Emergency / High Priority</div>
+            <div className="stat-label">{t('highPriority')}</div>
           </div>
           <AlertOctagon style={{ color: '#DC2626' }} />
         </div>
@@ -82,7 +84,7 @@ export const DoctorDashboard = () => {
         <div className="stat-card">
           <div>
             <div className="stat-value">3</div>
-            <div className="stat-label">Referral Cases to Review</div>
+            <div className="stat-label">{t('referrals')}</div>
           </div>
           <Stethoscope style={{ color: '#D97706' }} />
         </div>
@@ -131,7 +133,7 @@ export const DoctorDashboard = () => {
           <div className="gov-card-header">
             <div className="gov-card-title">
               <ClipboardList size={20} />
-              <span>Today's OPD Consultation Queue</span>
+              <span>{t('consultationQueue')}</span>
             </div>
             <Link to="/doctor/queue" style={{ fontSize: '0.8125rem', color: '#1E40AF', fontWeight: '600' }}>
               Full Queue
@@ -164,10 +166,10 @@ export const DoctorDashboard = () => {
                 <div style={{ marginTop: '0.625rem', display: 'flex', gap: '0.5rem' }}>
                   <Link to="/doctor/prescription" className="gov-btn gov-btn-primary gov-btn-sm">
                     <FileText size={14} />
-                    <span>Create Digital Prescription</span>
+                    <span>{t('createPrescriptionAction')}</span>
                   </Link>
                   <Link to="/doctor/diagnostics" className="gov-btn gov-btn-secondary gov-btn-sm">
-                    <span>Order Diagnostic</span>
+                    <span>{t('orderDiagnostic')}</span>
                   </Link>
                 </div>
               </div>
@@ -180,7 +182,7 @@ export const DoctorDashboard = () => {
           <div className="gov-card-header">
             <div className="gov-card-title">
               <AlertOctagon size={20} style={{ color: '#DC2626' }} />
-              <span>Emergency Referral Review</span>
+              <span>{t('emergencyReferralReview')}</span>
             </div>
           </div>
 
@@ -195,12 +197,12 @@ export const DoctorDashboard = () => {
                 </div>
 
                 <div style={{ fontSize: '0.8125rem', color: '#991B1B', marginBottom: '0.5rem' }}>
-                  <strong>Referred from:</strong> {ref.referring_facility_name}<br/>
-                  <strong>Clinical Note:</strong> {ref.clinical_notes}
+                  <strong>{t('referredFrom')}:</strong> {ref.referring_facility_name}<br/>
+                  <strong>{t('clinicalNote')}:</strong> {ref.clinical_notes}
                 </div>
 
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.75rem', color: '#7F1D1D', borderTop: '1px solid #FECACA', paddingTop: '0.375rem' }}>
-                  <span>Status: <strong>{ref.status}</strong> by Aundh Hospital</span>
+                  <span>{t('status')}: <strong>{ref.status}</strong> {t('acceptedBy')} District Hospital Aundh</span>
                   <Link to="/doctor/referrals" style={{ fontWeight: '700', color: '#1E40AF', textDecoration: 'none' }}>
                     View Case File →
                   </Link>
